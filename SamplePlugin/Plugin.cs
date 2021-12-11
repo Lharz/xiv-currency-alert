@@ -10,7 +10,7 @@ namespace SamplePlugin
     {
         public string Name => "Sample Plugin";
 
-        private const string commandName = "/pmycommand";
+        private const string commandName = "/tsalert";
 
         private DalamudPluginInterface PluginInterface { get; init; }
         private CommandManager CommandManager { get; init; }

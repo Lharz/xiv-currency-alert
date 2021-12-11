@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using ImGuiNET;
 using System;
 using System.Numerics;
 
@@ -27,11 +28,14 @@ namespace SamplePlugin
             set { this.settingsVisible = value; }
         }
 
+        //public unsafe InventoryManager* InventoryManager { get; }
+
         // passing in the image here just for simplicity
         public PluginUI(Configuration configuration, ImGuiScene.TextureWrap goatImage)
         {
             this.configuration = configuration;
             this.goatImage = goatImage;
+            //this.InventoryManager = InventoryManager.Instance();
         }
 
         public void Dispose()
@@ -54,30 +58,57 @@ namespace SamplePlugin
 
         public void DrawMainWindow()
         {
-            if (!Visible)
+            unsafe
             {
-                return;
-            }
+                InventoryManager* inventoryManager = InventoryManager.Instance();
+                InventoryContainer* currencyContainer = inventoryManager->GetInventoryContainer(InventoryType.Currency);
 
-            ImGui.SetNextWindowSize(new Vector2(375, 330), ImGuiCond.FirstUseEver);
-            ImGui.SetNextWindowSizeConstraints(new Vector2(375, 330), new Vector2(float.MaxValue, float.MaxValue));
-            if (ImGui.Begin("My Amazing Window", ref this.visible, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
-            {
-                ImGui.Text($"The random config bool is {this.configuration.SomePropertyToBeSavedAndWithADefault}");
+                // Poetics: 6
+                // Wolf Marks: 4
+                // Allied Seal: 8
+                // Company Seals: 1,2,3
 
-                if (ImGui.Button("Show Settings"))
+                uint poetics = currencyContainer->GetInventorySlot(6)->Quantity;
+                uint wolfMarks = currencyContainer->GetInventorySlot(4)->Quantity;
+                uint stormSeals = currencyContainer->GetInventorySlot(1)->Quantity;
+                uint serpentSeals = currencyContainer->GetInventorySlot(2)->Quantity;
+                uint flameSeals = currencyContainer->GetInventorySlot(3)->Quantity;
+
+                uint poeticsThreshold = (uint) this.configuration.PoeticsThreshold;
+
+                Visible = false;
+
+                if (poetics >= poeticsThreshold)
                 {
-                    SettingsVisible = true;
+                    Visible = true;
                 }
 
-                ImGui.Spacing();
+                //if (wolfMarks >= 15000)
+                //{
+                //    ImGui.Text("Wolf Marks: " + wolfMarks);
+                //}
 
-                ImGui.Text("Have a goat:");
-                ImGui.Indent(55);
-                ImGui.Image(this.goatImage.ImGuiHandle, new Vector2(this.goatImage.Width, this.goatImage.Height));
-                ImGui.Unindent(55);
+                if (!Visible)
+                {
+                    return;
+                }
+
+                ImGui.SetNextWindowSize(new Vector2(375, 330), ImGuiCond.FirstUseEver);
+                ImGui.SetNextWindowSizeConstraints(new Vector2(375, 330), new Vector2(float.MaxValue, float.MaxValue));
+                if (ImGui.Begin("My Amazing Window", ref this.visible, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
+                {
+                    if (ImGui.Button("Show Settings"))
+                    {
+                        SettingsVisible = true;
+                    }
+
+                    if (poetics >= poeticsThreshold)
+                    {
+                        ImGui.Text("DEPENSE TES POETICS MERDE");
+                    }
+                }
+                ImGui.End();
             }
-            ImGui.End();
         }
 
         public void DrawSettingsWindow()
@@ -92,10 +123,10 @@ namespace SamplePlugin
                 ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
             {
                 // can't ref a property, so use a local copy
-                var configValue = this.configuration.SomePropertyToBeSavedAndWithADefault;
-                if (ImGui.Checkbox("Random Config Bool", ref configValue))
+                var configValue = this.configuration.PoeticsThreshold;
+                if (ImGui.InputInt("Poetics Threshold", ref configValue))
                 {
-                    this.configuration.SomePropertyToBeSavedAndWithADefault = configValue;
+                    this.configuration.PoeticsThreshold = configValue;
                     // can save immediately on change, if you don't want to provide a "Save and Close" button
                     this.configuration.Save();
                 }

@@ -7,9 +7,9 @@ namespace SamplePlugin
     [Serializable]
     public class Configuration : IPluginConfiguration
     {
-        public int Version { get; set; } = 0;
+        public int Version { get; set; } = 1;
 
-        public bool SomePropertyToBeSavedAndWithADefault { get; set; } = true;
+        public int PoeticsThreshold { get; set; } = 1500;
 
         // the below exist just to make saving less cumbersome
 
