@@ -11,8 +11,6 @@ namespace SamplePlugin
     {
         private Configuration configuration;
 
-        private ImGuiScene.TextureWrap goatImage;
-
         // this extra bool exists for ImGui, since you can't ref a property
         private bool visible = false;
         public bool Visible
@@ -31,16 +29,15 @@ namespace SamplePlugin
         //public unsafe InventoryManager* InventoryManager { get; }
 
         // passing in the image here just for simplicity
-        public PluginUI(Configuration configuration, ImGuiScene.TextureWrap goatImage)
+        public PluginUI(Configuration configuration)
         {
             this.configuration = configuration;
-            this.goatImage = goatImage;
             //this.InventoryManager = InventoryManager.Instance();
         }
 
         public void Dispose()
         {
-            this.goatImage.Dispose();
+            
         }
 
         public void Draw()
@@ -83,11 +80,6 @@ namespace SamplePlugin
                     Visible = true;
                 }
 
-                //if (wolfMarks >= 15000)
-                //{
-                //    ImGui.Text("Wolf Marks: " + wolfMarks);
-                //}
-
                 if (!Visible)
                 {
                     return;
@@ -95,6 +87,7 @@ namespace SamplePlugin
 
                 ImGui.SetNextWindowSize(new Vector2(375, 330), ImGuiCond.FirstUseEver);
                 ImGui.SetNextWindowSizeConstraints(new Vector2(375, 330), new Vector2(float.MaxValue, float.MaxValue));
+
                 if (ImGui.Begin("My Amazing Window", ref this.visible, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
                 {
                     if (ImGui.Button("Show Settings"))
@@ -107,6 +100,7 @@ namespace SamplePlugin
                         ImGui.Text("DEPENSE TES POETICS MERDE");
                     }
                 }
+
                 ImGui.End();
             }
         }

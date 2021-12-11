@@ -8,9 +8,9 @@ namespace SamplePlugin
 {
     public sealed class Plugin : IDalamudPlugin
     {
-        public string Name => "Sample Plugin";
+        public string Name => "Currency Alert";
 
-        private const string commandName = "/tsalert";
+        private const string commandName = "/currencyalert";
 
         private DalamudPluginInterface PluginInterface { get; init; }
         private CommandManager CommandManager { get; init; }
@@ -29,9 +29,7 @@ namespace SamplePlugin
 
             // you might normally want to embed resources and load them from the manifest stream
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;
-            var imagePath = Path.Combine(Path.GetDirectoryName(assemblyLocation)!, "goat.png");
-            var goatImage = this.PluginInterface.UiBuilder.LoadImage(imagePath);
-            this.PluginUi = new PluginUI(this.Configuration, goatImage);
+            this.PluginUi = new PluginUI(this.Configuration);
 
             this.CommandManager.AddHandler(commandName, new CommandInfo(OnCommand)
             {
