@@ -3,21 +3,21 @@ using ImGuiNET;
 using System;
 using System.Numerics;
 
-namespace SamplePlugin
+namespace CurrencyAlert
 {
+    public enum CurrencySlot
+    {
+        StormSeals = 1,
+        WolfMarks = 4,
+        Poetics = 6,
+        AlliedSeals = 8
+    };
+
     // It is good to have this be disposable in general, in case you ever need it
     // to do any cleanup
     class PluginUI : IDisposable
     {
         private Configuration configuration;
-
-        // this extra bool exists for ImGui, since you can't ref a property
-        private bool visible = false;
-        public bool Visible
-        {
-            get { return this.visible; }
-            set { this.visible = value; }
-        }
 
         private bool settingsVisible = false;
         public bool SettingsVisible
@@ -26,13 +26,16 @@ namespace SamplePlugin
             set { this.settingsVisible = value; }
         }
 
-        //public unsafe InventoryManager* InventoryManager { get; }
+        private bool poeticsAlertVisible = false;
+        public bool PoeticsAlertVisible 
+        {
+            get { return this.poeticsAlertVisible; }
+            set { this.poeticsAlertVisible = value; }
+        }
 
-        // passing in the image here just for simplicity
         public PluginUI(Configuration configuration)
         {
             this.configuration = configuration;
-            //this.InventoryManager = InventoryManager.Instance();
         }
 
         public void Dispose()
@@ -65,22 +68,14 @@ namespace SamplePlugin
                 // Allied Seal: 8
                 // Company Seals: 1,2,3
 
-                uint poetics = currencyContainer->GetInventorySlot(6)->Quantity;
-                uint wolfMarks = currencyContainer->GetInventorySlot(4)->Quantity;
-                uint stormSeals = currencyContainer->GetInventorySlot(1)->Quantity;
-                uint serpentSeals = currencyContainer->GetInventorySlot(2)->Quantity;
-                uint flameSeals = currencyContainer->GetInventorySlot(3)->Quantity;
+                uint poetics = currencyContainer->GetInventorySlot((int) CurrencySlot.Poetics)->Quantity;
 
+                bool poeticsThresholdEnabled = this.configuration.PoeticsThresholdEnabled;
                 uint poeticsThreshold = (uint) this.configuration.PoeticsThreshold;
 
-                Visible = false;
+                PoeticsAlertVisible = poeticsThresholdEnabled && poetics >= poeticsThreshold;
 
-                if (poetics >= poeticsThreshold)
-                {
-                    Visible = true;
-                }
-
-                if (!Visible)
+                if (!PoeticsAlertVisible)
                 {
                     return;
                 }
@@ -88,17 +83,9 @@ namespace SamplePlugin
                 ImGui.SetNextWindowSize(new Vector2(375, 330), ImGuiCond.FirstUseEver);
                 ImGui.SetNextWindowSizeConstraints(new Vector2(375, 330), new Vector2(float.MaxValue, float.MaxValue));
 
-                if (ImGui.Begin("My Amazing Window", ref this.visible, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
+                if (ImGui.Begin("DEPENSE TES POETICS MERDE", ref this.poeticsAlertVisible, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.AlwaysAutoResize))
                 {
-                    if (ImGui.Button("Show Settings"))
-                    {
-                        SettingsVisible = true;
-                    }
-
-                    if (poetics >= poeticsThreshold)
-                    {
-                        ImGui.Text("DEPENSE TES POETICS MERDE");
-                    }
+                    ImGui.Text("DEPENSE TES POETICS MEEEEERDE");
                 }
 
                 ImGui.End();
@@ -112,16 +99,23 @@ namespace SamplePlugin
                 return;
             }
 
-            ImGui.SetNextWindowSize(new Vector2(232, 75), ImGuiCond.Always);
-            if (ImGui.Begin("A Wonderful Configuration Window", ref this.settingsVisible,
+            ImGui.SetNextWindowSize(new Vector2(330, 120), ImGuiCond.Always);
+            if (ImGui.Begin("Currency Alert Configuration Window", ref this.settingsVisible,
                 ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
             {
-                // can't ref a property, so use a local copy
-                var configValue = this.configuration.PoeticsThreshold;
-                if (ImGui.InputInt("Poetics Threshold", ref configValue))
+                var poeticsThresholdEnabledConfig = this.configuration.PoeticsThresholdEnabled;
+
+                if (ImGui.Checkbox("Poetics Threshold Enabled", ref poeticsThresholdEnabledConfig))
                 {
-                    this.configuration.PoeticsThreshold = configValue;
-                    // can save immediately on change, if you don't want to provide a "Save and Close" button
+                    this.configuration.PoeticsThresholdEnabled = poeticsThresholdEnabledConfig;
+                    this.configuration.Save();
+                }
+
+                var poeticsThresholdConfig = this.configuration.PoeticsThreshold;
+
+                if (ImGui.InputInt("Poetics Threshold", ref poeticsThresholdConfig, 1, 1, this.configuration.PoeticsThresholdEnabled ? ImGuiInputTextFlags.None : ImGuiInputTextFlags.ReadOnly))
+                {
+                    this.configuration.PoeticsThreshold = poeticsThresholdConfig;
                     this.configuration.Save();
                 }
             }

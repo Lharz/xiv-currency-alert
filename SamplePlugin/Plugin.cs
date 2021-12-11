@@ -4,7 +4,7 @@ using Dalamud.Plugin;
 using System.IO;
 using System.Reflection;
 
-namespace SamplePlugin
+namespace CurrencyAlert
 {
     public sealed class Plugin : IDalamudPlugin
     {
@@ -48,8 +48,7 @@ namespace SamplePlugin
 
         private void OnCommand(string command, string args)
         {
-            // in response to the slash command, just display our main ui
-            this.PluginUi.Visible = true;
+            this.DrawConfigUI();
         }
 
         private void DrawUI()
