@@ -6,7 +6,7 @@
     <Version>0.1.0.0</Version>
     <Description>Currency Alert</Description>
     <Copyright></Copyright>
-    <PackageProjectUrl>https://github.com/goatcorp/SamplePlugin</PackageProjectUrl>
+	  <PackageProjectUrl>https://github.com/Lharz/xiv-currency-alert</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup>

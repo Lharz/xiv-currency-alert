@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.Command;
+﻿using CurrencyAlert.Enum;
+using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using System.IO;
@@ -16,6 +17,8 @@ namespace CurrencyAlert
         private CommandManager CommandManager { get; init; }
         private Configuration Configuration { get; init; }
         private PluginUI PluginUi { get; init; }
+        private State State { get; init; }
+        private CurrencyManager CurrencyManager { get; init; }
 
         public Plugin(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
@@ -23,6 +26,8 @@ namespace CurrencyAlert
         {
             this.PluginInterface = pluginInterface;
             this.CommandManager = commandManager;
+
+            this.State = new State();
 
             this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             this.Configuration.Initialize(this.PluginInterface);
@@ -33,11 +38,19 @@ namespace CurrencyAlert
 
             this.CommandManager.AddHandler(commandName, new CommandInfo(OnCommand)
             {
-                HelpMessage = "A useful message to display in /xlhelp"
+                HelpMessage = "Let you configure alert thresholds for various currencies"
             });
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
+
+            this.CurrencyManager = new CurrencyManager(this.State, this.Configuration);
+            this.PluginInterface.UiBuilder.Draw += this.CurrencyManager.Update;
+        }
+
+        private void OnCurrencyThresholdReached(Currency currency)
+        {
+            this.State.AlertVisible[currency] = true;
         }
 
         public void Dispose()
@@ -53,12 +66,12 @@ namespace CurrencyAlert
 
         private void DrawUI()
         {
-            this.PluginUi.Draw();
+            this.PluginUi.Draw(State);
         }
 
         private void DrawConfigUI()
         {
-            this.PluginUi.SettingsVisible = true;
+            this.State.SettingsVisible = true;
         }
     }
 }
