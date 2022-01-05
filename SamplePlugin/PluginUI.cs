@@ -5,9 +5,7 @@ using System;
 using System.Numerics;
 
 namespace CurrencyAlert
-{    
-    // It is good to have this be disposable in general, in case you ever need it
-    // to do any cleanup
+{
     class PluginUI : IDisposable
     {
         private Configuration configuration;
@@ -49,23 +47,13 @@ namespace CurrencyAlert
 
                 ImGui.End();
             }
-
-            InventoryManager* inventoryManager = InventoryManager.Instance();
-            InventoryContainer* currencyContainer = inventoryManager->GetInventoryContainer(InventoryType.Currency);
-
-            uint poetics = currencyContainer->GetInventorySlot((int)CurrencySlot.Poetics)->Quantity;
-            uint stormSeals = currencyContainer->GetInventorySlot((int)CurrencySlot.StormSeals)->Quantity;
-            uint wolfMarks = currencyContainer->GetInventorySlot((int)CurrencySlot.WolfMarks)->Quantity;
-
-            bool poeticsThresholdEnabled = this.configuration.PoeticsThresholdEnabled;
-            uint poeticsThreshold = (uint) this.configuration.PoeticsThreshold;
         }     
 
         public void DrawSettingsWindow(State state)
         {
             bool visible = state.SettingsVisible;
 
-            ImGui.SetNextWindowSize(new Vector2(330, 120), ImGuiCond.Always);
+            ImGui.SetNextWindowSize(new Vector2(400, 600), ImGuiCond.Always);
             if (ImGui.Begin("Currency Alert Configuration Window", ref visible,
                 ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
             {
@@ -78,7 +66,6 @@ namespace CurrencyAlert
                     if (ImGui.Checkbox("Alert Enabled", ref alertEnabled))
                     {
                         configuration.AlertEnabled[currency] = alertEnabled;
-                        this.configuration.Save();
                     }
 
                     var thresholdValue = configuration.Threshold[currency];
@@ -87,10 +74,15 @@ namespace CurrencyAlert
                         configuration.AlertEnabled[currency] ? ImGuiInputTextFlags.None : ImGuiInputTextFlags.ReadOnly))
                     {
                         configuration.Threshold[currency] = thresholdValue;
-                        this.configuration.Save();
                     }
                 } 
             }
+
+            if (ImGui.Button("Save"))
+            {
+                this.configuration.Save();
+            }
+
             ImGui.End();
         }
     }

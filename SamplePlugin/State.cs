@@ -9,7 +9,7 @@ namespace CurrencyAlert
 {
     internal class State
     {
-        public bool SettingsVisible { get; set; }
+        public bool SettingsVisible { get; set; } = false;
         public Dictionary<Currency, bool> AlertVisible { get; set; } = new Dictionary<Currency, bool>();
 
         public State()

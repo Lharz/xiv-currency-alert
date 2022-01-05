@@ -28,6 +28,7 @@ namespace CurrencyAlert
             this.CommandManager = commandManager;
 
             this.State = new State();
+            this.CurrencyManager = new CurrencyManager();
 
             this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             this.Configuration.Initialize(this.PluginInterface);
@@ -43,14 +44,6 @@ namespace CurrencyAlert
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
-
-            this.CurrencyManager = new CurrencyManager(this.State, this.Configuration);
-            this.PluginInterface.UiBuilder.Draw += this.CurrencyManager.Update;
-        }
-
-        private void OnCurrencyThresholdReached(Currency currency)
-        {
-            this.State.AlertVisible[currency] = true;
         }
 
         public void Dispose()
@@ -66,6 +59,7 @@ namespace CurrencyAlert
 
         private void DrawUI()
         {
+            this.CurrencyManager.Update(this.State, this.Configuration);
             this.PluginUi.Draw(State);
         }
 

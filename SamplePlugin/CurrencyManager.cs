@@ -12,21 +12,29 @@ namespace CurrencyAlert
     {
         private InventoryManager* Inventory { get; }
         private InventoryContainer* CurrencyContainer { get; }
-        public State? State { get; }
-        public Configuration Configuration { get; }
 
-        public CurrencyManager(State? state, Configuration configuration)
+        public CurrencyManager()
         {
-            State = state;
-            Configuration = configuration;
-
             Inventory = InventoryManager.Instance();
             CurrencyContainer = this.Inventory->GetInventoryContainer(InventoryType.Currency);
         }
 
-        public void Update()
+        public void Update(State state, Configuration configuration)
         {
+            foreach (Currency currency in System.Enum.GetValues(typeof(Currency)))
+            {
+                var slot = EnumHelper.GetAttributeOfType<SlotAttribute>(currency).Value;
+                uint quantity = this.CurrencyContainer->GetInventorySlot((int) slot)->Quantity;
 
+                if (configuration.AlertEnabled[currency] && quantity >= configuration.Threshold[currency])
+                {
+                    state.AlertVisible[currency] = true;
+                }
+                else
+                {
+                    state.AlertVisible[currency] = false;
+                }
+            }
         }
     }
 }
