@@ -22,5 +22,11 @@ namespace CurrencyAlert
             var attributes = memInfo[0].GetCustomAttributes(typeof(T), false);
             return (attributes.Length > 0) ? (T)attributes[0] : null;
         }
+
+        public static void Each<T>(Action<T> action)
+        {
+            foreach (var item in System.Enum.GetValues(typeof(T)))
+                action((T)item);
+        }
     }
 }

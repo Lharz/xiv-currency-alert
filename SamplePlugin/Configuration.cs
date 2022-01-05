@@ -21,12 +21,12 @@ namespace CurrencyAlert
         {
             this.pluginInterface = pluginInterface;
 
-            foreach (Currency currency in System.Enum.GetValues(typeof(Currency)))
+            EnumHelper.Each<Currency>(currency =>
             {
                 this.AlertEnabled[currency] = true;
                 var defaultValue = EnumHelper.GetAttributeOfType<DefaultThresholdAttribute>(currency);
                 this.Threshold[currency] = defaultValue.Value;
-            }
+            });
         }
 
         public void Save() 
