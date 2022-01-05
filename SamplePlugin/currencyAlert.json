@@ -1,8 +1,8 @@
 {
   "Author": "Lharz Zobby@Ragnarok",
   "Name": "Currency Alert",
-  "Punchline": "A short one-liner that shows up in /xlplugins.",
-  "Description": "A description that shows up in /xlplugins. List any major slash-command(s).",
+  "Punchline": "Configure alerts thresholds for various currencies.",
+  "Description": "/currencyalert: show the configuration panel.",
   "InternalName": "currencyAlert",
   "ApplicableVersion": "any",
   "Tags": [

@@ -1,6 +1,9 @@
-﻿using Dalamud.Game.Command;
+﻿using CurrencyAlert.Enum;
+using Dalamud.Game.Command;
+using Dalamud.Game.Gui;
 using Dalamud.IoC;
 using Dalamud.Plugin;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using System.IO;
 using System.Reflection;
 
@@ -15,7 +18,9 @@ namespace CurrencyAlert
         private DalamudPluginInterface PluginInterface { get; init; }
         private CommandManager CommandManager { get; init; }
         private Configuration Configuration { get; init; }
-        private PluginUI PluginUi { get; init; }
+        private PluginUI PluginUI { get; init; }
+
+        [PluginService] public static ChatGui Chat { get; private set; } = null!;
 
         public Plugin(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
@@ -29,11 +34,11 @@ namespace CurrencyAlert
 
             // you might normally want to embed resources and load them from the manifest stream
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;
-            this.PluginUi = new PluginUI(this.Configuration);
+            this.PluginUI = new PluginUI(this.Configuration);
 
             this.CommandManager.AddHandler(commandName, new CommandInfo(OnCommand)
             {
-                HelpMessage = "A useful message to display in /xlhelp"
+                HelpMessage = "Lets you configure alert thresholds for various currencies"
             });
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
@@ -42,7 +47,7 @@ namespace CurrencyAlert
 
         public void Dispose()
         {
-            this.PluginUi.Dispose();
+            this.PluginUI.Dispose();
             this.CommandManager.RemoveHandler(commandName);
         }
 
@@ -53,12 +58,34 @@ namespace CurrencyAlert
 
         private void DrawUI()
         {
-            this.PluginUi.Draw();
+            // TODO: move this logic elsewhere
+            unsafe
+            {
+                InventoryManager* inventoryManager = InventoryManager.Instance();
+                InventoryContainer* currencyContainer = inventoryManager->GetInventoryContainer(InventoryType.Currency);
+
+                EnumHelper.Each<Currency>(currency =>
+                {
+                    var slot = EnumHelper.GetAttributeOfType<SlotAttribute>(currency).Value;
+                    uint quantity = currencyContainer->GetInventorySlot((int)slot)->Quantity;
+
+                    if (this.Configuration.AlertEnabled[currency] && quantity >= this.Configuration.Threshold[currency])
+                    {
+                        this.PluginUI.AlertVisible[currency] = true;
+                    }
+                    else
+                    {
+                        this.PluginUI.AlertVisible[currency] = false;
+                    }
+                });
+            }
+
+            this.PluginUI.Draw();
         }
 
         private void DrawConfigUI()
         {
-            this.PluginUi.SettingsVisible = true;
+            this.PluginUI.SettingsVisible = true;
         }
     }
 }
