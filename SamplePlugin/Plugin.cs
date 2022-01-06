@@ -32,7 +32,6 @@ namespace CurrencyAlert
             this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             this.Configuration.Initialize(this.PluginInterface);
 
-            // you might normally want to embed resources and load them from the manifest stream
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;
             this.PluginUI = new PluginUI(this.Configuration);
 
