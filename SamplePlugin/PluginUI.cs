@@ -62,7 +62,7 @@ namespace CurrencyAlert
 
                 var isVisible = this.AlertVisible[currency];
 
-                if (ImGui.Begin("Currency Alert", ref isVisible,
+                if (ImGui.Begin("Currency Alert", ref isVisible, 
                     ImGuiWindowFlags.NoScrollbar |
                     ImGuiWindowFlags.NoScrollWithMouse |
                     ImGuiWindowFlags.AlwaysAutoResize |
@@ -70,7 +70,8 @@ namespace CurrencyAlert
                     ImGuiWindowFlags.NoFocusOnAppearing
                     ))
                 {
-                    ImGui.Text($"You need to spend your {currency}");
+                    var name = EnumHelper.GetAttributeOfType<NameAttribute>(currency).Value;
+                    ImGui.Text($"You need to spend your {name}");
                 }
 
                 ImGui.End();
@@ -85,9 +86,10 @@ namespace CurrencyAlert
             {
                 EnumHelper.Each<Currency>(currency =>
                 {
+                    var name = EnumHelper.GetAttributeOfType<NameAttribute>(currency).Value;
                     var alertEnabled = this.configuration.AlertEnabled[currency];
 
-                    if (ImGui.Checkbox($"{currency.ToString()} Alert Enabled", ref alertEnabled))
+                    if (ImGui.Checkbox($"{name} Alert Enabled", ref alertEnabled))
                     {
                         this.configuration.AlertEnabled[currency] = alertEnabled;
                         this.configuration.Save();
@@ -95,7 +97,7 @@ namespace CurrencyAlert
 
                     var thresholdValue = this.configuration.Threshold[currency];
 
-                    if (ImGui.InputInt($"{currency.ToString()} Threshold Value", ref thresholdValue, 1, 1,
+                    if (ImGui.InputInt($"{name} Threshold Value", ref thresholdValue, 1, 1,
                         this.configuration.AlertEnabled[currency] ? ImGuiInputTextFlags.None : ImGuiInputTextFlags.ReadOnly))
                     {
                         this.configuration.Threshold[currency] = thresholdValue;
