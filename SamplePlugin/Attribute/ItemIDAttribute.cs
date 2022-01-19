@@ -2,9 +2,9 @@
 
 namespace CurrencyAlert
 {
-    internal class SlotAttribute : Attribute
+    internal class ItemIDAttribute : Attribute
     {
-        public SlotAttribute(int v)
+        public ItemIDAttribute(int v)
         {
             Value = v;
         }

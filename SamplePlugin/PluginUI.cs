@@ -80,30 +80,39 @@ namespace CurrencyAlert
 
         public void DrawSettingsWindow()
         {
-            ImGui.SetNextWindowSize(new Vector2(400, 600), ImGuiCond.Always);
+            ImGui.SetNextWindowSize(new Vector2(700, 500), ImGuiCond.Always);
             if (ImGui.Begin("Currency Alert Configuration Window", ref this.settingsVisible,
-                ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
+                ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollWithMouse))
             {
-                EnumHelper.Each<Currency>(currency =>
+                if (ImGui.BeginTabBar("AlertsConfiguration_Tabs"))
                 {
-                    var name = EnumHelper.GetAttributeOfType<NameAttribute>(currency).Value;
-                    var alertEnabled = this.configuration.AlertEnabled[currency];
-                     
-                    if (ImGui.Checkbox($"{name} Alert Enabled", ref alertEnabled))
+                    EnumHelper.Each<Currency>(currency =>
                     {
-                        this.configuration.AlertEnabled[currency] = alertEnabled;
-                        this.configuration.Save();
-                    }
+                        var name = EnumHelper.GetAttributeOfType<NameAttribute>(currency).Value;
+                        var category = EnumHelper.GetAttributeOfType<CategoryAttribute>(currency).Value;
+                        var alertEnabled = this.configuration.AlertEnabled[currency];
 
-                    var thresholdValue = this.configuration.Threshold[currency];
+                        if (ImGui.BeginTabItem(category))
+                        {
+                            if (ImGui.Checkbox($"{name} Alert Enabled", ref alertEnabled))
+                            {
+                                this.configuration.AlertEnabled[currency] = alertEnabled;
+                                this.configuration.Save();
+                            }
 
-                    if (ImGui.InputInt($"{name} Threshold Value", ref thresholdValue, 1, 1,
-                        this.configuration.AlertEnabled[currency] ? ImGuiInputTextFlags.None : ImGuiInputTextFlags.ReadOnly))
-                    {
-                        this.configuration.Threshold[currency] = thresholdValue;
-                        this.configuration.Save();
-                    }
-                });
+                            var thresholdValue = this.configuration.Threshold[currency];
+
+                            if (ImGui.InputInt($"{name} Threshold Value", ref thresholdValue, 1, 1,
+                                this.configuration.AlertEnabled[currency] ? ImGuiInputTextFlags.None : ImGuiInputTextFlags.ReadOnly))
+                            {
+                                this.configuration.Threshold[currency] = thresholdValue;
+                                this.configuration.Save();
+                            }
+
+                            ImGui.EndTabItem();
+                        }
+                    });
+                }
             }
 
 #if DEBUG
@@ -125,8 +134,13 @@ namespace CurrencyAlert
                 {
                     InventoryManager* inventoryManager = InventoryManager.Instance();
 
+                    ImGui.Text($"ItemID: 42   Value: {inventoryManager->GetInventoryItemCount(42)}");
+
                     EnumHelper.Each<InventoryType>(type =>
                     {
+                        if (type != InventoryType.Currency)
+                            return;
+
                         InventoryContainer* currencyContainer = inventoryManager->GetInventoryContainer(type);
 
                         if (currencyContainer == null)

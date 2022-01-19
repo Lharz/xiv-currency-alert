@@ -61,19 +61,11 @@ namespace CurrencyAlert
             unsafe
             {
                 InventoryManager* inventoryManager = InventoryManager.Instance();
-                InventoryContainer* currencyContainer = inventoryManager->GetInventoryContainer(InventoryType.Currency);
 
                 EnumHelper.Each<Currency>(currency =>
                 {
-                    var slot = EnumHelper.GetAttributeOfType<SlotAttribute>(currency).Value;
-                    InventoryItem* item = currencyContainer->GetInventorySlot((int)slot);
-
-                    if (item == null)
-                    {
-                        return; // TODO: write a log somewhere
-                    }
-
-                    uint quantity = item->Quantity;
+                    var itemID = EnumHelper.GetAttributeOfType<ItemIDAttribute>(currency).Value;
+                    int quantity = inventoryManager->GetInventoryItemCount((uint)itemID);
 
                     if (this.Configuration.AlertEnabled[currency] && quantity >= this.Configuration.Threshold[currency])
                     {
