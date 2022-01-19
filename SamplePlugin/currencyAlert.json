@@ -1,13 +1,15 @@
 {
   "Author": "Lharz",
   "Name": "Currency Alert",
-  "Punchline": "Configure alerts thresholds for various currencies.",
+  "Punchline": "Lets you setup alerts upon reaching certain currencies amount (such as Poetics or PVP marks).",
   "Description": "/currencyalert: show the configuration panel.",
   "InternalName": "currencyAlert",
   "ApplicableVersion": "any",
   "Tags": [
     "plugin",
     "currency",
-    "tomestones"
+    "tomestones",
+    "utility",
+    "other"
   ]
 }

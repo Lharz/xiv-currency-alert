@@ -17,16 +17,19 @@ namespace CurrencyAlert
         [NonSerialized]
         private DalamudPluginInterface? pluginInterface;
 
-        public void Initialize(DalamudPluginInterface pluginInterface)
+        public Configuration()
         {
-            this.pluginInterface = pluginInterface;
-
             EnumHelper.Each<Currency>(currency =>
             {
                 this.AlertEnabled[currency] = true;
                 var defaultValue = EnumHelper.GetAttributeOfType<DefaultThresholdAttribute>(currency);
                 this.Threshold[currency] = defaultValue.Value;
             });
+        }
+
+        public void Initialize(DalamudPluginInterface pluginInterface)
+        {
+            this.pluginInterface = pluginInterface;
         }
 
         public void Save()
