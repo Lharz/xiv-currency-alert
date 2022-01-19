@@ -8,9 +8,9 @@ namespace CurrencyAlert.Enum
 {
     public enum Currency
     {
-        [Name("Tomestones of Poetics"), Slot(6), DefaultThreshold(1500)]
+        [Name("Tomestones of Poetics"), Slot(6), DefaultThreshold(1400)]
         TomestoneOfPoetics,
-        [Name("Tomestones of Astronomy"), Slot(10), DefaultThreshold(1500)]
+        [Name("Tomestones of Astronomy"), Slot(10), DefaultThreshold(1800)]
         TomestoneOfAstronomy,
         [Name("Storm Seals"),  Slot(1), DefaultThreshold(75000)]
         StormSeal,

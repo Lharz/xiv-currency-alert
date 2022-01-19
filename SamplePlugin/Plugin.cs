@@ -66,7 +66,14 @@ namespace CurrencyAlert
                 EnumHelper.Each<Currency>(currency =>
                 {
                     var slot = EnumHelper.GetAttributeOfType<SlotAttribute>(currency).Value;
-                    uint quantity = currencyContainer->GetInventorySlot((int)slot)->Quantity;
+                    InventoryItem* item = currencyContainer->GetInventorySlot((int)slot);
+
+                    if (item == null)
+                    {
+                        return; // TODO: write a log somewhere
+                    }
+
+                    uint quantity = item->Quantity;
 
                     if (this.Configuration.AlertEnabled[currency] && quantity >= this.Configuration.Threshold[currency])
                     {

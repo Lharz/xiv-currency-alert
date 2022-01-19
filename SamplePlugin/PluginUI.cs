@@ -88,7 +88,7 @@ namespace CurrencyAlert
                 {
                     var name = EnumHelper.GetAttributeOfType<NameAttribute>(currency).Value;
                     var alertEnabled = this.configuration.AlertEnabled[currency];
-
+                     
                     if (ImGui.Checkbox($"{name} Alert Enabled", ref alertEnabled))
                     {
                         this.configuration.AlertEnabled[currency] = alertEnabled;
@@ -124,17 +124,27 @@ namespace CurrencyAlert
                 unsafe
                 {
                     InventoryManager* inventoryManager = InventoryManager.Instance();
-                    InventoryContainer* currencyContainer = inventoryManager->GetInventoryContainer(InventoryType.Currency);
 
-                    for (var i = 0; i < 100000; ++i)
+                    EnumHelper.Each<InventoryType>(type =>
                     {
-                        var item = currencyContainer->GetInventorySlot(i);
+                        InventoryContainer* currencyContainer = inventoryManager->GetInventoryContainer(type);
 
-                        if (item == null)
-                            continue;
+                        if (currencyContainer == null)
+                        {
+                            return; // TODO: log something
+                        }
 
-                        ImGui.Text($"Index: {i}   Value: {item->Quantity}");
-                    }
+                        ImGui.Text($"----- {type.ToString()} -----");
+                        for (var i = 0; i < int.MaxValue; ++i)
+                        {
+                            var item = currencyContainer->GetInventorySlot(i);
+
+                            if (item == null)
+                                break;
+                            
+                            ImGui.Text($"Index: {i}   Value: {item->Quantity}");
+                        }
+                    });
                 }
             }
 

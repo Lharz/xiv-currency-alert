@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Authors></Authors>
     <Company></Company>
-    <Version>0.2.2.0</Version>
+    <Version>0.2.2</Version>
     <Description>Currency Alert</Description>
     <Copyright></Copyright>
 	  <PackageProjectUrl>https://github.com/Lharz/xiv-currency-alert</PackageProjectUrl>
@@ -22,6 +22,8 @@
 
   <PropertyGroup>
     <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+    <RepositoryUrl>https://github.com/Lharz/xiv-currency-alert</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
