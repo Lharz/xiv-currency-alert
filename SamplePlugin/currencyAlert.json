@@ -11,33 +11,3 @@
     "tomestones"
   ]
 }
-{
-  "Disabled": true,
-  "Testing": false,
-  "InstalledFromUrl": null,
-  "Author": "Lharz",
-  "Name": "Currency Alert",
-  "Punchline": "Configure alerts upon reaching various currencies amount.",
-  "Description": "This plugin lets you setup alerts upon reaching configurable currencies amount (such as Poetics or Wolf Marks). You will never overcap your currencies now.",
-  "Tags": [
-    "plugin",
-    "currency",
-    "tomestones"
-  ],
-  "IsHide": false,
-  "InternalName": "CurrencyAlert",
-  "AssemblyVersion": "0.2.2.0",
-  "TestingAssemblyVersion": null,
-  "IsTestingExclusive": false,
-  "RepoUrl": null,
-  "ApplicableVersion": "any",
-  "DalamudApiLevel": 4,
-  "DownloadCount": 0,
-  "LastUpdate": 0,
-  "DownloadLinkInstall": null,
-  "DownloadLinkUpdate": null,
-  "DownloadLinkTesting": null,
-  "LoadPriority": 0,
-  "ImageUrls": null,
-  "IconUrl": null
-}
