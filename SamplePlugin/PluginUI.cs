@@ -80,9 +80,8 @@ namespace CurrencyAlert
 
         public void DrawSettingsWindow()
         {
-            ImGui.SetNextWindowSize(new Vector2(700, 500), ImGuiCond.Always);
-            if (ImGui.Begin("Currency Alert Configuration Window", ref this.settingsVisible,
-                ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollWithMouse))
+            ImGui.SetNextWindowSize(new Vector2(700, 500), ImGuiCond.FirstUseEver);
+            if (ImGui.Begin("Currency Alert Configuration Window", ref this.settingsVisible))
             {
                 if (ImGui.BeginTabBar("AlertsConfiguration_Tabs"))
                 {
