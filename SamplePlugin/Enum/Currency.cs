@@ -24,6 +24,8 @@ namespace CurrencyAlert.Enum
 
         [Name("Wolf Marks"), ItemID(25), DefaultThreshold(18000), Category("Battle")]
         WolfMark,
+        [Name("Trophy Crystal"), ItemID(36656), DefaultThreshold(18000), Category("Battle")]
+        TrophyCrystal,
 
         [Name("Allied Seals"), ItemID(27), DefaultThreshold(3500), Category("Battle")]
         AlliedSeal,
@@ -31,7 +33,6 @@ namespace CurrencyAlert.Enum
         CenturioSeal,
         [Name("Sack of Nuts"), ItemID(26533), DefaultThreshold(3500), Category("Battle")]
         SackOfNut,
-        
         [Name("Bicolor Gemstone"), ItemID(26807), DefaultThreshold(800), Category("Battle")]
         BicolorGemstone,
 
