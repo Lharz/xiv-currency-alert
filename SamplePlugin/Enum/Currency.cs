@@ -31,6 +31,9 @@ namespace CurrencyAlert.Enum
         CenturioSeal,
         [Name("Sack of Nuts"), ItemID(26533), DefaultThreshold(3500), Category("Battle")]
         SackOfNut,
+        
+        [Name("Bicolor Gemstone"), ItemID(26807), DefaultThreshold(1000), Category("Battle")]
+        BicolorGemstone,
 
         [Name("White Crafters' Scrip"), ItemID(25199), DefaultThreshold(1500), Category("Other")]
         WhiteCraftersScrip,
