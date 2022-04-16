@@ -1,15 +1,20 @@
 {
   "Author": "Lharz",
   "Name": "Currency Alert",
-  "Punchline": "Lets you setup alerts upon reaching certain currencies amount (such as Poetics or PVP marks).",
-  "Description": "/currencyalert: show the configuration panel.",
-  "InternalName": "currencyAlert",
-  "ApplicableVersion": "any",
+  "Punchline": "Display alerts upon reaching configurable currencies thresholds (such as Poetics or PVP marks).",
+  "Description": "/currencyalert: shows the configuration panel.",
+  "Changelog": null,
   "Tags": [
     "plugin",
     "currency",
     "tomestones",
     "utility",
     "other"
-  ]
+  ],
+  "CategoryTags": null,
+  "AssemblyVersion": "0.3.2.0",
+  "RepoUrl": "https://github.com/Lharz/xiv-currency-alert",
+  "DalamudApiLevel": 6,
+  "ImageUrls": null,
+  "IconUrl": null
 }

@@ -19,12 +19,6 @@ namespace CurrencyAlert
             get { return settingsVisible; }
             set { settingsVisible = value; }
         }
-        private bool debugVisible = false;
-        public bool DebugVisible
-        {
-            get { return debugVisible; }
-            set { debugVisible = value; }
-        }
         public Dictionary<Currency, bool> AlertVisible { get; set; } = new Dictionary<Currency, bool>();
 
         public PluginUI(Configuration configuration)
@@ -45,9 +39,6 @@ namespace CurrencyAlert
 
             if (this.SettingsVisible)
                 DrawSettingsWindow();
-
-            if (this.DebugVisible)
-                DrawDebugWindow();
         }
 
         public void DrawMainWindow()
@@ -109,53 +100,6 @@ namespace CurrencyAlert
                             }
 
                             ImGui.EndTabItem();
-                        }
-                    });
-                }
-            }
-
-#if DEBUG
-            if (ImGui.Button("Open Debug"))
-                this.DebugVisible = true;
-#endif
-
-            ImGui.End();
-        }
-
-        public void DrawDebugWindow()
-        {
-            ImGui.SetNextWindowSize(new Vector2(375, 330), ImGuiCond.FirstUseEver);
-            ImGui.SetNextWindowSizeConstraints(new Vector2(375, 330), new Vector2(float.MaxValue, float.MaxValue));
-
-            if (ImGui.Begin("Currency Alert Debug", ref this.debugVisible))
-            {
-                unsafe
-                {
-                    InventoryManager* inventoryManager = InventoryManager.Instance();
-
-                    ImGui.Text($"ItemID: 42   Value: {inventoryManager->GetInventoryItemCount(42)}");
-
-                    EnumHelper.Each<InventoryType>(type =>
-                    {
-                        if (type != InventoryType.Currency)
-                            return;
-
-                        InventoryContainer* currencyContainer = inventoryManager->GetInventoryContainer(type);
-
-                        if (currencyContainer == null)
-                        {
-                            return; // TODO: log something
-                        }
-
-                        ImGui.Text($"----- {type.ToString()} -----");
-                        for (var i = 0; i < int.MaxValue; ++i)
-                        {
-                            var item = currencyContainer->GetInventorySlot(i);
-
-                            if (item == null)
-                                break;
-                            
-                            ImGui.Text($"Index: {i}   Value: {item->Quantity}");
                         }
                     });
                 }
