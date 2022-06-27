@@ -24,7 +24,7 @@ namespace CurrencyAlert.Enum
 
         [Name("Wolf Marks"), ItemID(25), DefaultThreshold(18000), Category("Battle")]
         WolfMark,
-        [Name("Trophy Crystal"), ItemID(36656), DefaultThreshold(18000), Category("Battle")]
+        [Name("Trophy Crystals"), ItemID(36656), DefaultThreshold(18000), Category("Battle")]
         TrophyCrystal,
 
         [Name("Allied Seals"), ItemID(27), DefaultThreshold(3500), Category("Battle")]
