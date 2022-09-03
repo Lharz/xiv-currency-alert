@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Authors></Authors>
     <Company></Company>
-    <Version>0.3.2.0</Version>
+    <Version>0.3.3.0</Version>
     <Description>Currency Alert</Description>
     <Copyright></Copyright>
-	  <PackageProjectUrl>https://github.com/Lharz/xiv-currency-alert</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Lharz/xiv-currency-alert</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -17,6 +17,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 
   <PropertyGroup>
