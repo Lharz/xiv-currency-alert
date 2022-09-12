@@ -9,7 +9,7 @@ namespace CurrencyAlert
     [Serializable]
     public class Configuration : IPluginConfiguration
     {
-        public int Version { get; set; } = 4;
+        public int Version { get; set; } = 5;
 
         public Dictionary<Currency, bool> AlertEnabled { get; set; } = new Dictionary<Currency, bool>();
         public Dictionary<Currency, int> Threshold { get; set; } = new Dictionary<Currency , int>();
