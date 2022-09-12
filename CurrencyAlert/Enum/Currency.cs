@@ -10,10 +10,10 @@ namespace CurrencyAlert.Enum
     {
         [Name("Tomestones of Poetics"), ItemID(28), DefaultThreshold(1400), Category("Battle")]
         TomestoneOfPoetics,
-        [Name("Tomestones of Aphorism"), ItemID(42), DefaultThreshold(1700), Category("Battle")]
-        TomestoneOfAphorism,
         [Name("Tomestones of Astronomy"), ItemID(43), DefaultThreshold(1700), Category("Battle")]
         TomestoneOfAstronomy,
+        [Name("Tomestones of Causality"), ItemID(44), DefaultThreshold(1700), Category("Battle")]
+        TomestoneOfCausality,
 
         [Name("Storm Seals"),  ItemID(20), DefaultThreshold(75000), Category("Common")]
         StormSeal,
