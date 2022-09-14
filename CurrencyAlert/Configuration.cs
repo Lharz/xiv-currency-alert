@@ -1,4 +1,5 @@
-﻿using CurrencyAlert.Enum;
+﻿using CurrencyAlert.Helper;
+using CurrencyAlert.Provider;
 using Dalamud.Configuration;
 using Dalamud.Plugin;
 using System;
@@ -11,30 +12,27 @@ namespace CurrencyAlert
     {
         public int Version { get; set; } = 5;
 
-        public Dictionary<Currency, bool> AlertEnabled { get; set; } = new Dictionary<Currency, bool>();
-        public Dictionary<Currency, int> Threshold { get; set; } = new Dictionary<Currency , int>();
-
-        [NonSerialized]
-        private DalamudPluginInterface? pluginInterface;
+        public bool UiLocked { get; set; } = false;
+        public Dictionary<int, bool> AlertEnabled { get; } = new Dictionary<int, bool>();
+        public Dictionary<int, int> Threshold { get; } = new Dictionary<int, int>();
 
         public Configuration()
         {
-            EnumHelper.Each<Currency>(currency =>
+            foreach (var currency in CurrencyProvider.Instance.GetAll())
             {
-                this.AlertEnabled[currency] = true;
-                var defaultValue = EnumHelper.GetAttributeOfType<DefaultThresholdAttribute>(currency);
-                this.Threshold[currency] = defaultValue.Value;
-            });
+                this.AlertEnabled[currency.Id] = true;
+                this.Threshold[currency.Id] = currency.DefaultThreshold;
+            }
         }
 
-        public void Initialize(DalamudPluginInterface pluginInterface)
+        public void Initialize()
         {
-            this.pluginInterface = pluginInterface;
+           
         }
 
         public void Save()
         {
-            this.pluginInterface!.SavePluginConfig(this);
+            PluginHelper.PluginInterface.SavePluginConfig(this);
         }
     }
 }

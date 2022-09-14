@@ -1,10 +1,13 @@
-﻿using CurrencyAlert.Enum;
+﻿using CurrencyAlert.Helper;
+using CurrencyAlert.Provider;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using System.IO;
+using ImGuiNET;
+using Newtonsoft.Json;
+using System;
 using System.Reflection;
 
 namespace CurrencyAlert
@@ -15,39 +18,47 @@ namespace CurrencyAlert
 
         private const string commandName = "/currencyalert";
 
-        private DalamudPluginInterface PluginInterface { get; init; }
-        private CommandManager CommandManager { get; init; }
         private Configuration Configuration { get; init; }
         private PluginUI PluginUI { get; init; }
 
         [PluginService] public static ChatGui Chat { get; private set; } = null!;
 
-        public Plugin(
-            [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
-            [RequiredVersion("1.0")] CommandManager commandManager)
-        {
-            this.PluginInterface = pluginInterface;
-            this.CommandManager = commandManager;
+        private bool LoggedIn => PluginHelper.ClientState.LocalPlayer != null && PluginHelper.ClientState.LocalContentId != 0;
 
-            this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
-            this.Configuration.Initialize(this.PluginInterface);
+        public Plugin(DalamudPluginInterface pluginInterface)
+        {
+            pluginInterface.Create<PluginHelper>();
+
+            try
+            {
+                this.Configuration = PluginHelper.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+            }
+            catch (Exception e)
+            {
+                this.Configuration = new Configuration();
+                this.Configuration.Save();
+
+                PluginHelper.Chat.Print("Your CurrencyAlert configuration has been reset because of compatibility issues. Please check the plugin configuration window.");
+            }
+
+            this.Configuration.Initialize();
 
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;
             this.PluginUI = new PluginUI(this.Configuration);
 
-            this.CommandManager.AddHandler(commandName, new CommandInfo(OnCommand)
+            PluginHelper.CommandManager.AddHandler(commandName, new CommandInfo(OnCommand)
             {
                 HelpMessage = "Lets you configure alert thresholds for various currencies"
             });
 
-            this.PluginInterface.UiBuilder.Draw += DrawUI;
-            this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
+            PluginHelper.PluginInterface.UiBuilder.Draw += DrawUI;
+            PluginHelper.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
         }
 
         public void Dispose()
         {
             this.PluginUI.Dispose();
-            this.CommandManager.RemoveHandler(commandName);
+            PluginHelper.CommandManager.RemoveHandler(commandName);
         }
 
         private void OnCommand(string command, string args)
@@ -57,28 +68,36 @@ namespace CurrencyAlert
 
         private void DrawUI()
         {
+            if (!this.LoggedIn)
+                return;
+
+            this.UpdateAlerts();
+
+            this.PluginUI.Draw();
+        }
+
+        private void UpdateAlerts()
+        {
             // TODO: move this logic elsewhere
+            // TODO: do this only every X seconds
             unsafe
             {
                 InventoryManager* inventoryManager = InventoryManager.Instance();
 
-                EnumHelper.Each<Currency>(currency =>
+                foreach (var currency in CurrencyProvider.Instance.GetAll())
                 {
-                    var itemID = EnumHelper.GetAttributeOfType<ItemIDAttribute>(currency).Value;
-                    int quantity = inventoryManager->GetInventoryItemCount((uint)itemID);
+                    int quantity = inventoryManager->GetInventoryItemCount((uint)currency.Id);
 
-                    if (this.Configuration.AlertEnabled[currency] && quantity >= this.Configuration.Threshold[currency])
+                    if (this.Configuration.AlertEnabled[currency.Id] && quantity >= this.Configuration.Threshold[currency.Id])
                     {
-                        this.PluginUI.AlertVisible[currency] = true;
+                        this.PluginUI.AlertVisible[currency.Id] = true;
                     }
                     else
                     {
-                        this.PluginUI.AlertVisible[currency] = false;
+                        this.PluginUI.AlertVisible[currency.Id] = false;
                     }
-                });
+                }
             }
-
-            this.PluginUI.Draw();
         }
 
         private void DrawConfigUI()

@@ -1,7 +1,4 @@
-﻿using CurrencyAlert.Enum;
-using Dalamud.Game.Gui;
-using Dalamud.IoC;
-using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using CurrencyAlert.Provider;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
@@ -19,13 +16,16 @@ namespace CurrencyAlert
             get { return settingsVisible; }
             set { settingsVisible = value; }
         }
-        public Dictionary<Currency, bool> AlertVisible { get; set; } = new Dictionary<Currency, bool>();
+        public Dictionary<int, bool> AlertVisible { get; set; } = new Dictionary<int, bool>();
 
         public PluginUI(Configuration configuration)
         {
             this.configuration = configuration;
 
-            EnumHelper.Each<Currency>(currency => this.AlertVisible[currency] = false);
+            foreach (var currency in CurrencyProvider.Instance.GetAll())
+            {
+                this.AlertVisible[currency.Id] = false;
+            }
         }
 
         public void Dispose()
@@ -43,30 +43,42 @@ namespace CurrencyAlert
 
         public void DrawMainWindow()
         {
-            EnumHelper.Each<Currency>(currency =>
+            foreach (var currency in CurrencyProvider.Instance.GetAll())
             {
-                if (!this.AlertVisible[currency])
-                    return;
+                if (!this.AlertVisible[currency.Id])
+                    continue;
 
                 ImGui.SetNextWindowSize(new Vector2(375, 10), ImGuiCond.FirstUseEver);
                 ImGui.SetNextWindowSizeConstraints(new Vector2(375, 10), new Vector2(float.MaxValue, float.MaxValue));
 
-                var isVisible = this.AlertVisible[currency];
+                var isVisible = this.AlertVisible[currency.Id];
 
-                if (ImGui.Begin("Currency Alert", ref isVisible, 
-                    ImGuiWindowFlags.NoScrollbar |
+                var guiOptions = ImGuiWindowFlags.NoScrollbar |
                     ImGuiWindowFlags.NoScrollWithMouse |
                     ImGuiWindowFlags.AlwaysAutoResize |
                     ImGuiWindowFlags.NoTitleBar |
-                    ImGuiWindowFlags.NoFocusOnAppearing
-                    ))
-                {
-                    var name = EnumHelper.GetAttributeOfType<NameAttribute>(currency).Value;
-                    ImGui.Text($"You need to spend your {name}");
-                }
+                    ImGuiWindowFlags.NoFocusOnAppearing;
 
-                ImGui.End();
-            });
+                if (configuration.UiLocked)
+                    guiOptions |= ImGuiWindowFlags.NoMove;
+
+                if (ImGui.Begin("Currency Alert", ref isVisible, guiOptions))
+                {
+                    ImGui.Text($"You need to spend your");
+
+                    if (currency.Image != null)
+                    {
+                        ImGui.SameLine();
+                        ImGui.Image(currency.Image.ImGuiHandle, new Vector2(22, 22));
+                    }
+
+                    ImGui.SameLine();
+
+                    ImGui.Text($"{currency.Name}");
+
+                    ImGui.End();
+                }
+            }
         }     
 
         public void DrawSettingsWindow()
@@ -74,38 +86,60 @@ namespace CurrencyAlert
             ImGui.SetNextWindowSize(new Vector2(700, 500), ImGuiCond.FirstUseEver);
             if (ImGui.Begin("Currency Alert Configuration Window", ref this.settingsVisible))
             {
+                var uiLocked = this.configuration.UiLocked;
+
+                if (ImGui.Checkbox("Lock alert window", ref uiLocked))
+                {
+                    this.configuration.UiLocked = uiLocked;
+                    this.configuration.Save();
+                }
+
                 if (ImGui.BeginTabBar("AlertsConfiguration_Tabs"))
                 {
-                    EnumHelper.Each<Currency>(currency =>
+                    foreach (var currency in CurrencyProvider.Instance.GetAll())
                     {
-                        var name = EnumHelper.GetAttributeOfType<NameAttribute>(currency).Value;
-                        var category = EnumHelper.GetAttributeOfType<CategoryAttribute>(currency).Value;
-                        var alertEnabled = this.configuration.AlertEnabled[currency];
+                        var name = currency.Name;
+                        var category = currency.Category;
+                        var alertEnabled = this.configuration.AlertEnabled[currency.Id];
 
-                        if (ImGui.BeginTabItem(category))
+                        if (ImGui.BeginTabItem(category.ToString()))
                         {
-                            if (ImGui.Checkbox($"{name} Alert Enabled", ref alertEnabled))
+                            if (currency.Image != null)
                             {
-                                this.configuration.AlertEnabled[currency] = alertEnabled;
+                                ImGui.Image(currency.Image.ImGuiHandle, new Vector2(22, 22));
+                                ImGui.SameLine();
+                            }
+
+                            ImGui.Text($"{currency.Name}");
+
+                            if (ImGui.Checkbox($"Enabled##{name}", ref alertEnabled))
+                            {
+                                this.configuration.AlertEnabled[currency.Id] = alertEnabled;
                                 this.configuration.Save();
                             }
 
-                            var thresholdValue = this.configuration.Threshold[currency];
+                            ImGui.SameLine();
 
-                            if (ImGui.InputInt($"{name} Threshold Value", ref thresholdValue, 1, 1,
-                                this.configuration.AlertEnabled[currency] ? ImGuiInputTextFlags.None : ImGuiInputTextFlags.ReadOnly))
+                            var thresholdValue = this.configuration.Threshold[currency.Id];
+
+                            if (ImGui.InputInt($"Threshold##{name}", ref thresholdValue, 1, 1,
+                                this.configuration.AlertEnabled[currency.Id] ? ImGuiInputTextFlags.None : ImGuiInputTextFlags.ReadOnly))
                             {
-                                this.configuration.Threshold[currency] = thresholdValue;
+                                this.configuration.Threshold[currency.Id] = thresholdValue;
                                 this.configuration.Save();
                             }
+
+                            ImGui.Separator();
 
                             ImGui.EndTabItem();
                         }
-                    });
-                }
-            }
+                    }
 
-            ImGui.End();
+                    ImGui.EndTabBar();
+                }
+
+                ImGui.End();
+            }
         }
     }
 }
