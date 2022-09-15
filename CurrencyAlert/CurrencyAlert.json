@@ -1,6 +1,6 @@
 {
   "Author": "Lharz",
-  "Name": "Currency Alert",
+  "Name": "CurrencyAlert",
   "Punchline": "Display alerts upon reaching configurable currencies thresholds (such as Poetics or PVP marks).",
   "Description": "/currencyalert: shows the configuration panel.",
   "Changelog": null,
