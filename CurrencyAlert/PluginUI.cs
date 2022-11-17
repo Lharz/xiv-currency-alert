@@ -52,11 +52,11 @@ namespace CurrencyAlert
         {
             lastMainWindowPos = ImGui.GetWindowPos();
 
-            if (this.configuration.SortDirection == SortDirection.Up)
+            if (this.configuration.StackDirection == StackDirection.Up)
             {
                 lastMainWindowPos.Y += ImGui.GetWindowHeight();
             }
-            else if (this.configuration.SortDirection == SortDirection.Left)
+            else if (this.configuration.StackDirection == StackDirection.Left)
             {
                 lastMainWindowPos.X += ImGui.GetWindowWidth();
             }
@@ -91,11 +91,11 @@ namespace CurrencyAlert
                 {
                     Vector2 newPos = new Vector2 { X = lastMainWindowPos.X, Y = lastMainWindowPos.Y };
 
-                    if (this.configuration.SortDirection == SortDirection.Up)
+                    if (this.configuration.StackDirection == StackDirection.Up)
                     {
                         newPos.Y -= ImGui.GetWindowHeight();
                     }
-                    else if (this.configuration.SortDirection == SortDirection.Left)
+                    else if (this.configuration.StackDirection == StackDirection.Left)
                     {
                         newPos.X -= ImGui.GetWindowWidth();
                     }
@@ -111,7 +111,7 @@ namespace CurrencyAlert
                     if (first)
                     {
                         ImGui.Text($"You need to spend your");
-                        if (this.configuration.SortDirection == SortDirection.Left || this.configuration.SortDirection == SortDirection.Right)
+                        if (this.configuration.StackDirection == StackDirection.Left || this.configuration.StackDirection == StackDirection.Right)
                         {
                             first = false;
                         }
@@ -129,7 +129,7 @@ namespace CurrencyAlert
                         ImGui.Text($"{currency.Name}");
                     }
 
-                    if (this.configuration.SortDirection == SortDirection.Left || this.configuration.SortDirection == SortDirection.Right)
+                    if (this.configuration.StackDirection == StackDirection.Left || this.configuration.StackDirection == StackDirection.Right)
                     {
                         ImGui.SameLine();
                     }
@@ -161,10 +161,10 @@ namespace CurrencyAlert
                     this.configuration.Save();
                 }
 
-                int sortDirection = (int) this.configuration.SortDirection;
-                if (ImGui.Combo("Sort Direction", ref sortDirection, new string[] { "Up", "Down", "Left", "Right" }, 4))
+                int stackDirection = (int) this.configuration.StackDirection;
+                if (ImGui.Combo("Stack Direction", ref stackDirection, new string[] { "Up", "Down", "Left", "Right" }, 4))
                 {
-                    this.configuration.SortDirection = (SortDirection) sortDirection;
+                    this.configuration.StackDirection = (StackDirection) stackDirection;
                     this.configuration.Save();
                 };
 

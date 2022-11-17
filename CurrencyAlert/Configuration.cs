@@ -15,7 +15,7 @@ namespace CurrencyAlert
 
         public bool UiLocked { get; set; } = false;
         public bool MinimalDisplay { get; set; } = false;
-        public SortDirection SortDirection { get; set;} = 0;
+        public StackDirection StackDirection { get; set;} = 0;
         public Dictionary<int, bool> AlertEnabled { get; } = new Dictionary<int, bool>();
         public Dictionary<int, int> Threshold { get; } = new Dictionary<int, int>();
 

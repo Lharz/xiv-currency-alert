@@ -1,6 +1,6 @@
 ﻿namespace CurrencyAlert.Enum
 {
-    public enum SortDirection
+    public enum StackDirection
     {
         Up, 
         Down, 
