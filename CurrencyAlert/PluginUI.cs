@@ -1,7 +1,10 @@
-﻿using CurrencyAlert.Provider;
+﻿using CurrencyAlert.Enum;
+using CurrencyAlert.Provider;
 using ImGuiNET;
+using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace CurrencyAlert
@@ -17,6 +20,8 @@ namespace CurrencyAlert
             set { settingsVisible = value; }
         }
         public Dictionary<int, bool> AlertVisible { get; set; } = new Dictionary<int, bool>();
+
+        private Vector2 lastMainWindowPos = new Vector2 { X = 10, Y = 10 };
 
         public PluginUI(Configuration configuration)
         {
@@ -41,30 +46,76 @@ namespace CurrencyAlert
                 DrawSettingsWindow();
         }
 
+        int count = 0;
+
+        void recordPos()
+        {
+            lastMainWindowPos = ImGui.GetWindowPos();
+
+            if (this.configuration.SortDirection == SortDirection.Up)
+            {
+                lastMainWindowPos.Y += ImGui.GetWindowHeight();
+            }
+            else if (this.configuration.SortDirection == SortDirection.Left)
+            {
+                lastMainWindowPos.X += ImGui.GetWindowWidth();
+            }
+        }
+
         public void DrawMainWindow()
         {
-            foreach (var currency in CurrencyProvider.Instance.GetAll())
+            var guiOptions = 
+                ImGuiWindowFlags.NoScrollbar |
+                ImGuiWindowFlags.NoScrollWithMouse |
+                ImGuiWindowFlags.AlwaysAutoResize |
+                ImGuiWindowFlags.NoTitleBar |
+                ImGuiWindowFlags.NoFocusOnAppearing;
+
+            if (configuration.UiLocked)
+                guiOptions |= ImGuiWindowFlags.NoMove;
+
+            var visibleCurrency = CurrencyProvider.Instance.GetAll().Where(x => AlertVisible[x.Id]);
+
+            if (ImGui.Begin("Currency Alert", guiOptions))
             {
-                if (!this.AlertVisible[currency.Id])
-                    continue;
-
-                ImGui.SetNextWindowSize(new Vector2(375, 10), ImGuiCond.FirstUseEver);
-                ImGui.SetNextWindowSizeConstraints(new Vector2(375, 10), new Vector2(float.MaxValue, float.MaxValue));
-
-                var isVisible = this.AlertVisible[currency.Id];
-
-                var guiOptions = ImGuiWindowFlags.NoScrollbar |
-                    ImGuiWindowFlags.NoScrollWithMouse |
-                    ImGuiWindowFlags.AlwaysAutoResize |
-                    ImGuiWindowFlags.NoTitleBar |
-                    ImGuiWindowFlags.NoFocusOnAppearing;
-
-                if (configuration.UiLocked)
-                    guiOptions |= ImGuiWindowFlags.NoMove;
-
-                if (ImGui.Begin("Currency Alert", ref isVisible, guiOptions))
+                if (count == 0)
                 {
-                    ImGui.Text($"You need to spend your");
+                    recordPos();
+                    count++;
+                }
+                else if (ImGui.IsMouseDragging(ImGuiMouseButton.Left))
+                {
+                    recordPos();
+                }
+                else
+                {
+                    Vector2 newPos = new Vector2 { X = lastMainWindowPos.X, Y = lastMainWindowPos.Y };
+
+                    if (this.configuration.SortDirection == SortDirection.Up)
+                    {
+                        newPos.Y -= ImGui.GetWindowHeight();
+                    }
+                    else if (this.configuration.SortDirection == SortDirection.Left)
+                    {
+                        newPos.X -= ImGui.GetWindowWidth();
+                    }
+
+                    ImGui.SetNextWindowPos(newPos);
+                }
+
+                bool first = true;
+                foreach (var currency in visibleCurrency)
+                {
+                    ImGui.Begin("Currency Alert", guiOptions);
+
+                    if (first)
+                    {
+                        ImGui.Text($"You need to spend your");
+                        if (this.configuration.SortDirection == SortDirection.Left || this.configuration.SortDirection == SortDirection.Right)
+                        {
+                            first = false;
+                        }
+                    }
 
                     if (currency.Image != null)
                     {
@@ -72,14 +123,23 @@ namespace CurrencyAlert
                         ImGui.Image(currency.Image.ImGuiHandle, new Vector2(22, 22));
                     }
 
-                    ImGui.SameLine();
+                    if (!this.configuration.MinimalDisplay)
+                    {
+                        ImGui.SameLine();
+                        ImGui.Text($"{currency.Name}");
+                    }
 
-                    ImGui.Text($"{currency.Name}");
+                    if (this.configuration.SortDirection == SortDirection.Left || this.configuration.SortDirection == SortDirection.Right)
+                    {
+                        ImGui.SameLine();
+                    }
 
                     ImGui.End();
                 }
             }
-        }     
+
+            ImGui.End();
+        }
 
         public void DrawSettingsWindow()
         {
@@ -93,6 +153,27 @@ namespace CurrencyAlert
                     this.configuration.UiLocked = uiLocked;
                     this.configuration.Save();
                 }
+
+                var minimalDisplay = this.configuration.MinimalDisplay;
+                if (ImGui.Checkbox("Minimal Display", ref minimalDisplay))
+                {
+                    this.configuration.MinimalDisplay = minimalDisplay;
+                    this.configuration.Save();
+                }
+
+                int sortDirection = (int) this.configuration.SortDirection;
+                if (ImGui.Combo("Sort Direction", ref sortDirection, new string[] { "Up", "Down", "Left", "Right" }, 4))
+                {
+                    this.configuration.SortDirection = (SortDirection) sortDirection;
+                    this.configuration.Save();
+                };
+
+                if (ImGui.Button("Reset Position"))
+                {
+                    lastMainWindowPos = new Vector2 { X = 100, Y = 100 };
+                }
+
+                ImGui.NewLine();
 
                 if (ImGui.BeginTabBar("AlertsConfiguration_Tabs"))
                 {

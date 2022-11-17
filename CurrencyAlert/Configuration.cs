@@ -1,4 +1,5 @@
-﻿using CurrencyAlert.Helper;
+﻿using CurrencyAlert.Enum;
+using CurrencyAlert.Helper;
 using CurrencyAlert.Provider;
 using Dalamud.Configuration;
 using Dalamud.Plugin;
@@ -13,6 +14,8 @@ namespace CurrencyAlert
         public int Version { get; set; } = 5;
 
         public bool UiLocked { get; set; } = false;
+        public bool MinimalDisplay { get; set; } = false;
+        public SortDirection SortDirection { get; set;} = 0;
         public Dictionary<int, bool> AlertEnabled { get; } = new Dictionary<int, bool>();
         public Dictionary<int, int> Threshold { get; } = new Dictionary<int, int>();
 
