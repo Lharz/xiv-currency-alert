@@ -1,31 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Authors></Authors>
-		<Company></Company>
 		<Version>0.4.0.0</Version>
 		<Description>Currency Alert</Description>
-		<Copyright></Copyright>
 		<PackageProjectUrl>https://github.com/Lharz/xiv-currency-alert</PackageProjectUrl>
 	</PropertyGroup>
-
-	<ProjectExtensions>
-		<DalamudPlugin>
-			<ApiLevel>7</ApiLevel>
-			<Author>Lharz</Author>
-			<Name>CurrencyAlert</Name>
-			<Punchline>Display alerts upon reaching configurable currencies thresholds (such as Poetics or PVP marks).</Punchline>
-			<Description>/currencyalert: shows the configuration panel.</Description>
-			<Tags>
-				<Tag>Currency</Tag>
-				<Tag>Utility</Tag>
-			</Tags>
-			<Images>
-				<Icon>../icon.png</Icon>
-			</Images>
-			<Hidden>False</Hidden>
-		</DalamudPlugin>
-	</ProjectExtensions>
 
 	<PropertyGroup>
 		<TargetFramework>net6.0-windows</TargetFramework>
