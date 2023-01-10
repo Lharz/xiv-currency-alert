@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using CurrencyAlert.DataModels;
 using CurrencyAlert.Localization;
+using Dalamud.Logging;
 using KamiLib.ChatCommands;
 
 namespace CurrencyAlert.System.cs;
@@ -10,6 +12,7 @@ namespace CurrencyAlert.System.cs;
 public class CurrencyTracker : IDisposable
 {
     private readonly CancellationTokenSource cancellationTokenSource = new();
+    private readonly Stopwatch timer = new();
     
     public readonly List<TrackedCurrency> ActiveWarnings = new();
     
@@ -31,7 +34,7 @@ public class CurrencyTracker : IDisposable
         {
             if (currency.Enabled)
             {
-                if (currency.CurrencyInfo.GetCurrentQuantity() <= currency.Threshold.Value)
+                if (currency.CurrencyInfo().GetCurrentQuantity() >= currency.Threshold.Value)
                 {
                     ActiveWarnings.Add(currency);
                 }
@@ -42,10 +45,19 @@ public class CurrencyTracker : IDisposable
     private void OnZoneChange(object? sender, ushort e)
     {
         if (!Service.Configuration.ChatNotification) return;
-
-        foreach (var currency in ActiveWarnings)
+        
+        if (timer.Elapsed.Minutes >= 5 || timer.IsRunning == false)
         {
-            Chat.Print($"{currency.CurrencyInfo.ItemName}", Strings.ChatWarningText);
+            timer.Restart();
+            foreach (var currency in ActiveWarnings)
+            {
+                Chat.Print($"{currency.CurrencyInfo().ItemName}", Strings.ChatWarningText);
+            }
+        }
+        else
+        {
+            var lockoutRemaining = TimeSpan.FromMinutes(5) - timer.Elapsed;
+            PluginLog.Debug($"Zone Change Messages Suppressed, '{lockoutRemaining}' Remaining");
         }
     }
     

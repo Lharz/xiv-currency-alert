@@ -18,7 +18,7 @@ public class GeneralSettingsSelectable : ISelectable, IDrawable
     public void DrawLabel()
     {
         ImGui.Text(Strings.GeneralSettings);
-        ImGuiHelpers.ScaledDummy(15.0f);
+        ImGuiHelpers.ScaledDummy(8.0f);
     }
 
     public void Draw()
@@ -28,7 +28,9 @@ public class GeneralSettingsSelectable : ISelectable, IDrawable
             .AddConfigCheckbox(Strings.ShowOverlay, OverlaySettings.Show)
             .AddConfigCheckbox(Strings.LockOverlay, OverlaySettings.LockPosition)
             .AddConfigCheckbox(Strings.MinimalOverlay, OverlaySettings.MinimalDisplay)
-            .AddDragFloat(Strings.Opacity, OverlaySettings.Opacity, 0.10f, 1.0f, innerWidth / 2.0f)
+            .AddConfigCheckbox(Strings.DisplayAscending, OverlaySettings.AscendingDescending)
+            .AddConfigCheckbox(Strings.ChatNotifications, Service.Configuration.ChatNotification)
+            .AddDragFloat(Strings.Opacity, OverlaySettings.Opacity, 0.00f, 1.0f, innerWidth / 2.0f)
             .Draw();
         
         InfoBox.Instance
@@ -36,6 +38,7 @@ public class GeneralSettingsSelectable : ISelectable, IDrawable
             .AddConfigCheckbox(Strings.ShowCurrencyIcon, DisplaySettings.ShowIcon)
             .AddConfigCheckbox(Strings.ShowCurrencyName, DisplaySettings.ShowName)
             .AddConfigCheckbox(Strings.ShowWarningText, DisplaySettings.ShowWarningText)
+            .AddConfigColor(Strings.TextColor, Strings.Default, DisplaySettings.TextColor, Colors.White)
             .Draw();
     }
 }

@@ -1,4 +1,5 @@
-﻿using CurrencyAlert.Commands;
+﻿using System.Numerics;
+using CurrencyAlert.Commands;
 using CurrencyAlert.DataModels;
 using CurrencyAlert.Localization;
 using Dalamud.Interface.Windowing;
@@ -16,12 +17,15 @@ public class OverlaySettings
     public Setting<float> Opacity = new(1.0f);
     public Setting<bool> MinimalDisplay = new(false);
     public Setting<bool> Show = new(true);
+    public Setting<bool> AscendingDescending = new(false);
 }
 
 public class OverlayWindow : Window
 {
     private static OverlaySettings OverlaySettings => Service.Configuration.OverlaySettings;
     private static DisplaySettings DisplaySettings => Service.Configuration.DisplaySettings;
+    
+    private Vector2 lastWindowSize = Vector2.Zero;
     
     public OverlayWindow() : base("Currency Alert Overlay")
     {
@@ -31,6 +35,7 @@ public class OverlayWindow : Window
         Flags |= ImGuiWindowFlags.NoBringToFrontOnFocus;
         Flags |= ImGuiWindowFlags.NoFocusOnAppearing;
         Flags |= ImGuiWindowFlags.NoNavFocus;
+        Flags |= ImGuiWindowFlags.AlwaysAutoResize;
     }
 
     public override void PreOpenCheck()
@@ -61,6 +66,8 @@ public class OverlayWindow : Window
     
     public override void Draw()
     {
+        ResizeWindow();
+        
         if (OverlaySettings.MinimalDisplay)
         {
             DrawMinimalDisplay();
@@ -70,24 +77,60 @@ public class OverlayWindow : Window
             DrawNormalDisplay();
         }
     }
-    
+
     public override void PostDraw()
     {
         ImGui.PopStyleColor();
         ImGui.PopStyleColor();
     }
     
+    private void ResizeWindow()
+    {
+        if(OverlaySettings.AscendingDescending)
+        {
+            var size = ImGui.GetWindowSize();
+
+            if(lastWindowSize != Vector2.Zero) 
+            {
+                var offset = lastWindowSize - size;
+                offset.X = 0;
+
+                if (offset != Vector2.Zero)
+                {
+                    ImGui.SetWindowPos(ImGui.GetWindowPos() + offset);
+                }
+            }
+
+            lastWindowSize = size;
+        }
+    }
+    
     private static void DrawMinimalDisplay()
     {
         if (DisplaySettings.ShowWarningText)
         {
-            ImGui.Text(Strings.OverlayWarningText);
+            ImGui.TextColored(DisplaySettings.TextColor.Value, Strings.OverlayWarningText);
             ImGui.SameLine();
         }
 
         foreach (var currency in Service.CurrencyTracker.ActiveWarnings)
         {
-            currency.Draw();
+            if (DisplaySettings.ShowIcon)
+            {
+                currency.DrawIcon();
+
+                if (DisplaySettings.ShowName)
+                {
+                    ImGui.SameLine();
+                    currency.DrawName(DisplaySettings.TextColor.Value);
+                    ImGui.SameLine();
+                }
+            }
+            else if (DisplaySettings.ShowName)
+            {
+                currency.DrawName(DisplaySettings.TextColor.Value);
+                ImGui.SameLine();
+            }
         }
     }
     
@@ -97,12 +140,20 @@ public class OverlayWindow : Window
         {
             if (DisplaySettings.ShowWarningText)
             {
-                ImGui.Text(Strings.OverlayWarningText);
+                ImGui.TextColored(DisplaySettings.TextColor.Value, Strings.OverlayWarningText);
                 ImGui.SameLine();
             }
-            
-            currency.Draw();
-            ImGui.SameLine();
+
+            if (DisplaySettings.ShowIcon)
+            {
+                currency.DrawIcon();
+                ImGui.SameLine();
+            }
+
+            if (DisplaySettings.ShowName)
+            {
+                currency.DrawName(DisplaySettings.TextColor.Value);
+            }
         }
     }
 }

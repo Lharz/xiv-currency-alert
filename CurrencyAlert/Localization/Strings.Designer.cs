@@ -60,6 +60,15 @@ namespace CurrencyAlert.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chat Notifications.
+        /// </summary>
+        internal static string ChatNotifications {
+            get {
+                return ResourceManager.GetString("ChatNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Above threshold.
         /// </summary>
         internal static string ChatWarningText {
@@ -101,6 +110,33 @@ namespace CurrencyAlert.Localization {
         internal static string CurrencyConfiguration {
             get {
                 return ResourceManager.GetString("CurrencyConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currently Selected.
+        /// </summary>
+        internal static string CurrentlySelected {
+            get {
+                return ResourceManager.GetString("CurrentlySelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        internal static string Default {
+            get {
+                return ResourceManager.GetString("Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display Ascending.
+        /// </summary>
+        internal static string DisplayAscending {
+            get {
+                return ResourceManager.GetString("DisplayAscending", resourceCulture);
             }
         }
         
@@ -209,6 +245,15 @@ namespace CurrencyAlert.Localization {
         internal static string ShowWarningText {
             get {
                 return ResourceManager.GetString("ShowWarningText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text Color.
+        /// </summary>
+        internal static string TextColor {
+            get {
+                return ResourceManager.GetString("TextColor", resourceCulture);
             }
         }
         

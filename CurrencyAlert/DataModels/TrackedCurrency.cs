@@ -7,23 +7,24 @@ namespace CurrencyAlert.DataModels;
 public record TrackedCurrency(CurrencyName Name, Setting<int> Threshold, Setting<bool> Enabled)
 {
     private static DisplaySettings DisplaySettings => Service.Configuration.DisplaySettings;
-    
-    public CurrencyInfo CurrencyInfo => new(Name);
 
-    public void Draw(bool ignoreDisplaySettings = false)
+    public CurrencyInfo CurrencyInfo()
     {
-        if (DisplaySettings.ShowIcon || ignoreDisplaySettings)
-        {
-            if (CurrencyInfo.IconTexture is { } icon)
-            {
-                ImGui.Image(icon.ImGuiHandle, new Vector2(20.0f));
-                ImGui.SameLine();
-            }
-        }
+        return new CurrencyInfo(Name);
+    }
 
-        if (DisplaySettings.ShowName || ignoreDisplaySettings)
+    public void DrawIcon()
+    {
+        if (CurrencyInfo().IconTexture is { } icon)
         {
-            ImGui.Text(CurrencyInfo.ItemName);
+            ImGui.Image(icon.ImGuiHandle, new Vector2(20.0f));
         }
     }
+
+    public void DrawName(Vector4 color)
+    {
+        ImGui.TextColored(color, CurrencyInfo().ItemName);
+    }
 }
+
+

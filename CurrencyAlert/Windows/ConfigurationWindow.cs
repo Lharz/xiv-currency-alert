@@ -13,12 +13,12 @@ namespace CurrencyAlert.Windows;
 
 public class ConfigurationWindow : SelectionWindow
 {
-    public ConfigurationWindow() : base("Currency Alert Configuration Window", 0.25f, 35.0f)
+    public ConfigurationWindow() : base("Currency Alert Configuration Window", 0.45f, 20.0f)
     {
         SizeConstraints = new WindowSizeConstraints
         {
-            MinimumSize = new Vector2(350, 510),
-            MaximumSize = new Vector2(9999,9999)
+            MinimumSize = new Vector2(600, 300),
+            MaximumSize = new Vector2(600,9999)
         };
 
         Flags |= ImGuiWindowFlags.NoScrollbar;
@@ -45,7 +45,7 @@ public class ConfigurationWindow : SelectionWindow
         var stringSize = ImGui.CalcTextSize(versionString);
 
         var x = ImGui.GetContentRegionAvail().X / 2 - stringSize.X / 2;
-        var y = ImGui.GetWindowHeight() - 30 * ImGuiHelpers.GlobalScale;
+        var y = ImGui.GetWindowHeight() - 20 * ImGuiHelpers.GlobalScale;
             
         ImGui.SetCursorPos(new Vector2(x, y));
 

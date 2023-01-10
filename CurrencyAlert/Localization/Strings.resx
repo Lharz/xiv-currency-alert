@@ -72,4 +72,19 @@
     <data name="Commands_ToggleOverlayHelp" xml:space="preserve">
         <value>Toggle Currency Alert Overlay</value>
     </data>
+    <data name="CurrentlySelected" xml:space="preserve">
+        <value>Currently Selected</value>
+    </data>
+    <data name="ChatNotifications" xml:space="preserve">
+        <value>Chat Notifications</value>
+    </data>
+    <data name="DisplayAscending" xml:space="preserve">
+        <value>Display Ascending</value>
+    </data>
+    <data name="TextColor" xml:space="preserve">
+        <value>Text Color</value>
+    </data>
+    <data name="Default" xml:space="preserve">
+        <value>Default</value>
+    </data>
 </root>
