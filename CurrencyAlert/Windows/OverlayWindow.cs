@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Linq;
+using System.Numerics;
 using CurrencyAlert.Commands;
 using CurrencyAlert.DataModels;
 using CurrencyAlert.Localization;
@@ -44,6 +45,8 @@ public class OverlayWindow : Window
         
         if (Condition.IsBoundByDuty()) IsOpen = false;
         if (Condition.IsInCutsceneOrQuestEvent()) IsOpen = false;
+        if (!Service.CurrencyTracker.ActiveWarnings.Any()) IsOpen = false;
+        if (!Service.ClientState.IsLoggedIn) IsOpen = false;
     }
 
     public override void PreDraw()
