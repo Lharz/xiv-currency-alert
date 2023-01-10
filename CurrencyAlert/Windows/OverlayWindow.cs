@@ -26,7 +26,8 @@ public class OverlayWindow : Window
     public OverlayWindow() : base("Currency Alert Overlay")
     {
         KamiCommon.CommandManager.AddCommand(new OverlayCommands());
-        
+
+        Flags |= ImGuiWindowFlags.NoDecoration;
         Flags |= ImGuiWindowFlags.NoBringToFrontOnFocus;
         Flags |= ImGuiWindowFlags.NoFocusOnAppearing;
         Flags |= ImGuiWindowFlags.NoNavFocus;
