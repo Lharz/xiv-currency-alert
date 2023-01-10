@@ -1,4 +1,5 @@
-﻿using CurrencyAlert.System.cs;
+﻿using CurrencyAlert.Localization;
+using CurrencyAlert.System.cs;
 using CurrencyAlert.Windows;
 using Dalamud.Plugin;
 using KamiLib;
@@ -14,7 +15,8 @@ public sealed class Plugin : IDalamudPlugin
         pluginInterface.Create<Service>();
         
         KamiCommon.Initialize(pluginInterface, Name, () => Service.Configuration.Save());
-        
+        LocalizationManager.Instance.Initialize();
+
         Service.Configuration = Service.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
         Service.Configuration.Initialize(Service.PluginInterface);
         
@@ -29,5 +31,6 @@ public sealed class Plugin : IDalamudPlugin
         KamiCommon.Dispose();
         
         Service.CurrencyTracker.Dispose();
+        LocalizationManager.Cleanup();
     }
 }
