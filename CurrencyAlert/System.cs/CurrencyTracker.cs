@@ -25,7 +25,7 @@ public class CurrencyTracker : IDisposable
 
     private void UpdateCurrencies()
     {
-        Service.Framework.RunOnTick(UpdateCurrencies, TimeSpan.FromSeconds(1), 0, cancellationTokenSource.Token);
+        Service.Framework.RunOnTick(UpdateCurrencies, TimeSpan.FromMilliseconds(250), 0, cancellationTokenSource.Token);
         
         ActiveWarnings.Clear();
         if (!Service.ClientState.IsLoggedIn) return;
