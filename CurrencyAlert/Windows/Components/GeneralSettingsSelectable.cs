@@ -29,10 +29,14 @@ public class GeneralSettingsSelectable : ISelectable, IDrawable
             .AddConfigCheckbox(Strings.LockOverlay, OverlaySettings.LockPosition)
             .AddConfigCheckbox(Strings.MinimalOverlay, OverlaySettings.MinimalDisplay)
             .AddConfigCheckbox(Strings.DisplayAscending, OverlaySettings.AscendingDescending)
-            .AddConfigCheckbox(Strings.ChatNotifications, Service.Configuration.ChatNotification)
             .AddDragFloat(Strings.Opacity, OverlaySettings.Opacity, 0.00f, 1.0f, innerWidth / 2.0f)
             .Draw();
         
+        InfoBox.Instance
+            .AddTitle(Strings.ChatNotifications)
+            .AddConfigCheckbox(Strings.ChatNotifications, Service.Configuration.ChatNotification)
+            .Draw();
+            
         InfoBox.Instance
             .AddTitle(Strings.DisplaySettings)
             .AddConfigCheckbox(Strings.ShowCurrencyIcon, DisplaySettings.ShowIcon)
