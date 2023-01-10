@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="GeneralSettings" xml:space="preserve">
+        <value>General Settings</value>
+    </data>
+    <data name="OverlaySettings" xml:space="preserve">
+        <value>Overlay Settings</value>
+    </data>
+    <data name="ShowOverlay" xml:space="preserve">
+        <value>Show Overlay</value>
+    </data>
+    <data name="LockOverlay" xml:space="preserve">
+        <value>Lock Position</value>
+    </data>
+    <data name="MinimalOverlay" xml:space="preserve">
+        <value>Minimal Display</value>
+    </data>
+    <data name="Opacity" xml:space="preserve">
+        <value>Opacity</value>
+    </data>
+    <data name="DisplaySettings" xml:space="preserve">
+        <value>Display Settings</value>
+    </data>
+    <data name="ShowCurrencyIcon" xml:space="preserve">
+        <value>Show Currency Icon</value>
+    </data>
+    <data name="ShowCurrencyName" xml:space="preserve">
+        <value>Show Currency Name</value>
+    </data>
+    <data name="ShowWarningText" xml:space="preserve">
+        <value>Show Warning Text</value>
+    </data>
+    <data name="CurrencyConfiguration" xml:space="preserve">
+        <value>Currency Configuration</value>
+    </data>
+    <data name="Enabled" xml:space="preserve">
+        <value>Enabled</value>
+    </data>
+    <data name="Threshold" xml:space="preserve">
+        <value>Threshold</value>
+    </data>
+    <data name="OverlayWarningText" xml:space="preserve">
+        <value>You need to spend your</value>
+    </data>
+    <data name="ChatWarningText" xml:space="preserve">
+        <value>Above threshold</value>
+    </data>
+    <data name="Commands_ShowOverlayHelp" xml:space="preserve">
+        <value>Show Currency Alert Overlay</value>
+    </data>
+    <data name="Commands_HideOverlayHelp" xml:space="preserve">
+        <value>Hide Currency Alert Overlay</value>
+    </data>
+    <data name="Commands_ToggleOverlayHelp" xml:space="preserve">
+        <value>Toggle Currency Alert Overlay</value>
+    </data>
+    <data name="CurrentlySelected" xml:space="preserve">
+        <value>Currently Selected</value>
+    </data>
+    <data name="ChatNotifications" xml:space="preserve">
+        <value>Chat Notifications</value>
+    </data>
+    <data name="DisplayAscending" xml:space="preserve">
+        <value>Display Ascending</value>
+    </data>
+    <data name="TextColor" xml:space="preserve">
+        <value>Text Color</value>
+    </data>
+    <data name="Default" xml:space="preserve">
+        <value>Default</value>
+    </data>
+</root>
