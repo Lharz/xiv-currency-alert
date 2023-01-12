@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GeneralSettings" xml:space="preserve">
+        <value>Paramètres généraux</value>
+    </data>
+  <data name="OverlaySettings" xml:space="preserve">
+        <value>Paramètres des alertes</value>
+    </data>
+  <data name="ShowOverlay" xml:space="preserve">
+        <value>Afficher les alertes</value>
+    </data>
+  <data name="LockOverlay" xml:space="preserve">
+        <value>Verrouiller la position</value>
+    </data>
+  <data name="MinimalOverlay" xml:space="preserve">
+        <value>Affichage minimal</value>
+    </data>
+  <data name="Opacity" xml:space="preserve">
+        <value>Opacité</value>
+    </data>
+  <data name="DisplaySettings" xml:space="preserve">
+        <value>Paramètres d'affichage</value>
+    </data>
+  <data name="ShowCurrencyIcon" xml:space="preserve">
+        <value>Afficher l'icône de la devise</value>
+    </data>
+  <data name="ShowCurrencyName" xml:space="preserve">
+        <value>Afficher le nom de la devise</value>
+    </data>
+  <data name="ShowWarningText" xml:space="preserve">
+        <value>Afficher le texte d'alerte</value>
+    </data>
+  <data name="CurrencyConfiguration" xml:space="preserve">
+        <value>Configuration de la devise</value>
+    </data>
+  <data name="Enabled" xml:space="preserve">
+        <value>Activé</value>
+    </data>
+  <data name="Threshold" xml:space="preserve">
+        <value>Seuil</value>
+    </data>
+  <data name="OverlayWarningText" xml:space="preserve">
+        <value>Vous devez dépenser vos</value>
+    </data>
+  <data name="ChatWarningText" xml:space="preserve">
+        <value>Au-dessus du seuil</value>
+    </data>
+  <data name="Commands_ShowOverlayHelp" xml:space="preserve">
+        <value>Afficher la superposition d'alerte des devises</value>
+    </data>
+  <data name="Commands_HideOverlayHelp" xml:space="preserve">
+        <value>Masquer la superposition des alertes de devises</value>
+    </data>
+  <data name="Commands_ToggleOverlayHelp" xml:space="preserve">
+        <value>Activer/désactiver la superposition des alertes de devises</value>
+    </data>
+  <data name="CurrentlySelected" xml:space="preserve">
+        <value>Actuellement sélectionné</value>
+    </data>
+  <data name="ChatNotifications" xml:space="preserve">
+        <value>Notifications de chat</value>
+    </data>
+  <data name="DisplayAscending" xml:space="preserve">
+        <value>Affichage croissant</value>
+    </data>
+  <data name="TextColor" xml:space="preserve">
+        <value>Couleur du texte</value>
+    </data>
+  <data name="Default" xml:space="preserve">
+        <value>Par défaut</value>
+    </data>
+</root>
