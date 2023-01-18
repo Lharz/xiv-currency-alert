@@ -6,6 +6,7 @@ using CurrencyAlert.DataModels;
 using CurrencyAlert.Localization;
 using Dalamud.Logging;
 using KamiLib.ChatCommands;
+using KamiLib.GameState;
 
 namespace CurrencyAlert.System.cs;
 
@@ -45,6 +46,7 @@ public class CurrencyTracker : IDisposable
     private void OnZoneChange(object? sender, ushort e)
     {
         if (!Service.Configuration.ChatNotification) return;
+        if (Condition.IsBoundByDuty()) return;
         
         if (timer.Elapsed.Minutes >= 5 || timer.IsRunning == false)
         {
