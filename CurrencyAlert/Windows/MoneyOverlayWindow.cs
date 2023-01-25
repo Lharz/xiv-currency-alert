@@ -18,8 +18,6 @@ public unsafe class MoneyOverlayWindow : Window
     
     public MoneyOverlayWindow() : base("###CurrencyAlertMoneyOverlayWindow")
     {
-        IsOpen = true;
-
         Flags |= ImGuiWindowFlags.NoDecoration;
         Flags |= ImGuiWindowFlags.NoBackground;
         Flags |= ImGuiWindowFlags.NoFocusOnAppearing;
@@ -30,6 +28,11 @@ public unsafe class MoneyOverlayWindow : Window
         Flags |= ImGuiWindowFlags.NoMouseInputs;
     }
 
+    public override void PreOpenCheck()
+    {
+        IsOpen = Settings.Enabled && MoneyNode.NodeValid && MoneyNode.GetRootNode()->IsVisible;
+    }
+    
     public override void PreDraw()
     {
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero);
