@@ -14,6 +14,8 @@ public unsafe class MoneyOverlayWindow : Window
 {
     private static MoneyOverlaySettings Settings => Service.Configuration.MoneyOverlaySettings;
     private readonly Dictionary<CurrencyName, CurrencyInfo> currencyInfoCache = new();
+    private BaseNode MoneyNode => new("_Money");
+    
     public MoneyOverlayWindow() : base("###CurrencyAlertMoneyOverlayWindow")
     {
         IsOpen = true;
@@ -32,18 +34,21 @@ public unsafe class MoneyOverlayWindow : Window
     {
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero);
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(8.0f));
+
+        if (MoneyNode.NodeValid)
+        {
+            var rootNode = MoneyNode.GetRootNode();
+            var height = rootNode->Height;
         
-        var baseNode = new BaseNode("_Money");
-        var rootNode = baseNode.GetRootNode();
-        var height = rootNode->Height;
-        
-        Position = new Vector2(rootNode->X, rootNode->Y - height * 3);
-        Size = new Vector2(rootNode->Width, rootNode->Height * 3);
+            Position = new Vector2(rootNode->X, rootNode->Y - height * 3);
+            Size = new Vector2(rootNode->Width, rootNode->Height * 3);
+        }
     }
 
     public override void Draw()
     {
         if (!Settings.Enabled) return;
+        if (!MoneyNode.NodeValid) return;
         
         foreach (var currency in Settings.MoneyOverlayCurrencies)
         {
