@@ -20,6 +20,12 @@ public unsafe class MoneyOverlayWindow : Window
 
         Flags |= ImGuiWindowFlags.NoDecoration;
         Flags |= ImGuiWindowFlags.NoBackground;
+        Flags |= ImGuiWindowFlags.NoFocusOnAppearing;
+        Flags |= ImGuiWindowFlags.NoBringToFrontOnFocus;
+        Flags |= ImGuiWindowFlags.NoNavFocus;
+        Flags |= ImGuiWindowFlags.NoInputs;
+        Flags |= ImGuiWindowFlags.NoNavInputs;
+        Flags |= ImGuiWindowFlags.NoMouseInputs;
     }
 
     public override void PreDraw()
