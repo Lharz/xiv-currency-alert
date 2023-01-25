@@ -1,4 +1,5 @@
-﻿using CurrencyAlert.DataModels;
+﻿using System;
+using CurrencyAlert.DataModels;
 using CurrencyAlert.Localization;
 using Dalamud.Interface;
 using ImGuiNET;
@@ -11,6 +12,7 @@ public class GeneralSettingsSelectable : ISelectable, IDrawable
 {
     private static OverlaySettings OverlaySettings => Service.Configuration.OverlaySettings;
     private static DisplaySettings DisplaySettings => Service.Configuration.DisplaySettings;
+    private static MoneyOverlaySettings MoneyOverlaySettings => Service.Configuration.MoneyOverlaySettings;
     
     public IDrawable Contents => this;
     public string ID => "GeneralSettings";
@@ -43,6 +45,14 @@ public class GeneralSettingsSelectable : ISelectable, IDrawable
             .AddConfigCheckbox(Strings.ShowCurrencyName, DisplaySettings.ShowName)
             .AddConfigCheckbox(Strings.ShowWarningText, DisplaySettings.ShowWarningText)
             .AddConfigColor(Strings.TextColor, Strings.Default, DisplaySettings.TextColor, Colors.White)
+            .Draw();
+
+        InfoBox.Instance
+            .AddTitle(Strings.MoneyOverlay, out var innerArea)
+            .AddConfigCheckbox(Strings.ShowMoneyOverlay, MoneyOverlaySettings.Enabled)
+            .AddConfigCombo(Enum.GetValues<CurrencyName>(), MoneyOverlaySettings.MoneyOverlayCurrencies[0], m => m.ToString(), "##First", width: innerArea)
+            .AddConfigCombo(Enum.GetValues<CurrencyName>(), MoneyOverlaySettings.MoneyOverlayCurrencies[1], m => m.ToString(), "##Second", width: innerArea)
+            .AddConfigCombo(Enum.GetValues<CurrencyName>(), MoneyOverlaySettings.MoneyOverlayCurrencies[2], m => m.ToString(), "##Third", width: innerArea)
             .Draw();
     }
 }

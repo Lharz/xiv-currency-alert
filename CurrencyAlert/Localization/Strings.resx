@@ -87,4 +87,10 @@
     <data name="Default" xml:space="preserve">
         <value>Default</value>
     </data>
+    <data name="MoneyOverlay" xml:space="preserve">
+        <value>Money Overlay</value>
+    </data>
+    <data name="ShowMoneyOverlay" xml:space="preserve">
+        <value>Show Money Overlay</value>
+    </data>
 </root>

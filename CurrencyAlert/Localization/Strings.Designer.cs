@@ -186,6 +186,15 @@ namespace CurrencyAlert.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Money Overlay.
+        /// </summary>
+        internal static string MoneyOverlay {
+            get {
+                return ResourceManager.GetString("MoneyOverlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opacity.
         /// </summary>
         internal static string Opacity {
@@ -227,6 +236,15 @@ namespace CurrencyAlert.Localization {
         internal static string ShowCurrencyName {
             get {
                 return ResourceManager.GetString("ShowCurrencyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Money Overlay.
+        /// </summary>
+        internal static string ShowMoneyOverlay {
+            get {
+                return ResourceManager.GetString("ShowMoneyOverlay", resourceCulture);
             }
         }
         
