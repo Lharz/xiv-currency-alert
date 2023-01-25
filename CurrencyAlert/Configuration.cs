@@ -14,8 +14,10 @@ public class Configuration : IPluginConfiguration
 
     public OverlaySettings OverlaySettings = new();
     public DisplaySettings DisplaySettings = new();
-    public Setting<bool> ChatNotification = new(false);
+    public MoneyOverlaySettings MoneyOverlaySettings = new();
     
+    public Setting<bool> ChatNotification = new(false);
+
     public TrackedCurrency[] TrackedCurrencies = {
         // Grand Company Seals
         new(CurrencyName.StormSeal, new Setting<int>(75_000), new Setting<bool>(true)),

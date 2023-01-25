@@ -22,6 +22,7 @@ public sealed class Plugin : IDalamudPlugin
         
         KamiCommon.WindowManager.AddConfigurationWindow(new ConfigurationWindow());
         KamiCommon.WindowManager.AddWindow(new OverlayWindow());
+        KamiCommon.WindowManager.AddWindow(new MoneyOverlayWindow());
 
         Service.CurrencyTracker = new CurrencyTracker();
     }

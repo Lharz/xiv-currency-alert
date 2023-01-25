@@ -24,4 +24,6 @@ public enum CurrencyName
     PurpleGatherersScripts,
     
     SkybuildersScripts,
+    
+    Unselected,
 }
