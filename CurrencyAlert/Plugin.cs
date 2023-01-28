@@ -20,7 +20,7 @@ public sealed class Plugin : IDalamudPlugin
         Service.Configuration = Service.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
         Service.Configuration.Initialize(Service.PluginInterface);
         
-        KamiCommon.WindowManager.AddConfigurationWindow(new ConfigurationWindow());
+        KamiCommon.WindowManager.AddConfigurationWindow(new ConfigurationWindow(), true);
         KamiCommon.WindowManager.AddWindow(new OverlayWindow());
 
         Service.CurrencyTracker = new CurrencyTracker();
