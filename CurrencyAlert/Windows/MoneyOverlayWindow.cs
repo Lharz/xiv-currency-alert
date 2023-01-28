@@ -27,7 +27,12 @@ public unsafe class MoneyOverlayWindow : Window
         Flags |= ImGuiWindowFlags.NoNavInputs;
         Flags |= ImGuiWindowFlags.NoMouseInputs;
     }
-    
+
+    public override void PreOpenCheck()
+    {
+        IsOpen = Settings.Enabled;
+    }
+
     public override bool DrawConditions()
     {
         if (!MoneyNode.NodeValid) return false;
